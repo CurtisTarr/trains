@@ -19,7 +19,7 @@ public class Activity {
         this.trainTrack = trainTrack;
     }
 
-    public void addMovedTo(int section, String train) {
+    public synchronized void addMovedTo(int section, String train) {
         // add an activity message to the activity history
         String tempString1 = "Train " + train + " moving/moved to [" + section + "]";
         theActivities.add(tempString1);

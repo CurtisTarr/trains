@@ -1,35 +1,55 @@
 public class Train extends Thread {
 
-    private int[] track;
-    private Activity activity;
-    private int loops;
-    private MageeSemaphore[] trackSemaphore;
-    private String name;
+    int currentSection;
+    int[] track;
 
-    public Train(int[] track, Activity activity , int loops, MageeSemaphore[] trackSemaphore, String name) {
+    MageeSemaphore[] trackSemaphore;
+    String name;
+    Activity activity;
+
+    private int loops;
+
+    Train(int[] track, Activity activity, int loops, MageeSemaphore[] trackSemaphore, String name) {
         this.track = track;
         this.activity = activity;
         this.loops = loops;
         this.trackSemaphore = trackSemaphore;
         this.name = name;
+        this.currentSection = -1;
     }
 
     @Override
     public void run() {
-        int currentSection = -1;
-        for(int i = 0; i < this.loops; i++) {
-            for (int nextSection: track) {
-                this.trackSemaphore[nextSection].P();
-                if (currentSection != -1) {
-                    this.trackSemaphore[currentSection].V();
-                }
-                currentSection = nextSection;
-                this.activity.addMovedTo(nextSection, name);
-            }
-            this.activity.addMessage("Train " + this.name + " finished loop" + i);
+        for (int i = 0; i < loops; i++) {
+            moveThroughTrack(i);
         }
-        this.trackSemaphore[currentSection].V();
-        this.activity.addMessage("Train " + this.name + " finished " + this.loops + " loops and has left the track");
-        this.activity.printActivities();
+        moveSection(track[0]);
+        trackSemaphore[currentSection].V();
+        activity.addMessage("Train " + name + " finished and has left the track");
+    }
+
+    void moveThroughTrack(int loop) {
+        for (int nextSection : track) {
+            moveSection(nextSection);
+        }
+        activity.addMessage("Train " + name + " finished loop" + (loop + 1));
+    }
+
+    void moveSection(int section) {
+        trackSemaphore[section].P();
+        activity.addMovedTo(section, name);
+        if (currentSection != -1) {
+            trackSemaphore[currentSection].V();
+        }
+        currentSection = section;
+        sleepTrain();
+    }
+
+    void sleepTrain() {
+        try {
+            sleep(50);
+        } catch (InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
