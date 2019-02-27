@@ -19,6 +19,7 @@ public class Activity {
         this.trainTrack = trainTrack;
     }
 
+    // Note - edited to take train so the log has reference to which train made it
     public synchronized void addMovedTo(int section, String train) {
         // add an activity message to the activity history
         String tempString1 = "Train " + train + " moving/moved to [" + section + "]";
@@ -42,6 +43,7 @@ public class Activity {
         }
     }// end printActivities
 
+    // Note - edited to display the location of the train on the track
     // Utility method to represent the track as a string for printing/display
     public String trackString(int section, String train) {
         String trackStateAsString =  "       " + trainTrack[2] + "  " + trainTrack[3] + "  " + trainTrack[4] + " \n"

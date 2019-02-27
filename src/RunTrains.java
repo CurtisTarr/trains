@@ -1,17 +1,19 @@
 public class RunTrains {
 
     public static void main(String[] args) {
+        // Create track using array of semaphores
         MageeSemaphore[] track = new MageeSemaphore[21];
-
         for (int i = 0; i < 21; i++) {
             track[i] = new MageeSemaphore(1);
         }
 
+        // Create activity
         Activity activity = new Activity(
                 new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
                         "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"}
         );
 
+        // Create trains
         Train A1 = new ATrain(activity, track, "A1");
         Train A2 = new ATrain(activity, track, "A2");
         Train A3 = new ATrain(activity, track, "A3");
@@ -21,6 +23,8 @@ public class RunTrains {
         Train C1 = new CTrain(activity, track, "C1");
         Train C2 = new CTrain(activity, track, "C2");
         Train C3 = new CTrain(activity, track, "C3");
+
+        // Start trains
         A1.start();
         A2.start();
         A3.start();
@@ -30,6 +34,8 @@ public class RunTrains {
         C1.start();
         C2.start();
         C3.start();
+
+        // Wait for trains to finish
         try {
             A1.join();
             A2.join();
@@ -43,6 +49,7 @@ public class RunTrains {
         } catch (InterruptedException e) {
             System.out.println(e.getMessage());
         }
+
         activity.printActivities();
     }
 }
