@@ -10,22 +10,30 @@ import java.util.Iterator;
 public class Activity {
 
     private final CopyOnWriteArrayList<String> theActivities;
-    private final String[] trainTrack;
+    private final String[] referenceTrack;
+    private String[] trainTrack;
 
     // Constructor for objects of class Activity
     // A reference to the track is passed as a parameter
     public Activity(String[] trainTrack) {
         theActivities = new CopyOnWriteArrayList<>();
         this.trainTrack = trainTrack;
+        this.referenceTrack = trainTrack.clone();
     }
 
-    // Note - edited to take train so the log has reference to which train made it
-    public synchronized void addMovedTo(int section, String train) {
+    // Note - edited to take previousSection and trainName so it is easier to keep history of
+    // what train did what, and where all trains are at a moment in time
+    public synchronized void addMovedTo(int newSection, int previousSection, String trainName) {
         // add an activity message to the activity history
-        String tempString1 = "Train " + train + " moving/moved to [" + section + "]";
+        String tempString1 = String.format("Train %s moved from [%d] to [%d]", trainName, previousSection, newSection);
         theActivities.add(tempString1);
+        // update track to have train in new location
+        if (previousSection != -1) {
+            trainTrack[previousSection] = referenceTrack[previousSection];
+        }
+        trainTrack[newSection] = trainName;
         // add the current state of the track to the activity history
-        theActivities.add(trackString(section, train));
+        theActivities.add(trackString());
     }// end addMovedTo
 
     public void addMessage(String message) {
@@ -43,10 +51,9 @@ public class Activity {
         }
     }// end printActivities
 
-    // Note - edited to display the location of the train on the track
     // Utility method to represent the track as a string for printing/display
-    public String trackString(int section, String train) {
-        String trackStateAsString =  "       " + trainTrack[2] + "  " + trainTrack[3] + "  " + trainTrack[4] + " \n"
+    public String trackString() {
+        String trackStateAsString = "       " + trainTrack[2] + "  " + trainTrack[3] + "  " + trainTrack[4] + " \n"
                 + "       " + trainTrack[1] + "     " + trainTrack[5] + " \n"
                 + "       " + trainTrack[0] + "     " + trainTrack[6] + " \n"
                 + " " + trainTrack[17] + " " + trainTrack[18] + " "
@@ -55,7 +62,6 @@ public class Activity {
                 + "      " + trainTrack[10] + "    " + trainTrack[16] + " \n"
                 + "      " + trainTrack[11] + "    " + trainTrack[15] + " \n"
                 + "      " + trainTrack[12] + " " + trainTrack[13] + " " + trainTrack[14] + " \n";
-        trackStateAsString = trackStateAsString.replace(String.format(" %d ", section), " " + train + " ");
         return (trackStateAsString);
     }// end trackString
 }// end Activity

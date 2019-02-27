@@ -8,8 +8,8 @@ class BTrain extends Train {
      * Constructor for BTrain extends Train
      *
      * @param activity the activity class for logging train position
-     * @param track a reference to the track the train uses
-     * @param name the name of the train
+     * @param track    a reference to the track the train uses
+     * @param name     the name of the train
      */
     BTrain(Activity activity, MageeSemaphore[] track, String name) {
         super(ROUTE, activity, LOOPS, track, name);

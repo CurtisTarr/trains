@@ -1,22 +1,22 @@
 // Train class for controlling movement of train throughout a route
 public class Train extends Thread {
 
+    int currentSection;
     int[] route;
     MageeSemaphore[] track;
     String name;
     Activity activity;
 
     private int loops;
-    private int currentSection;
 
     /**
      * Constructor for Train
      *
-     * @param route the sections of track that the train moves through
+     * @param route    the sections of track that the train moves through
      * @param activity the activity class for logging train position
-     * @param loops number of times the train loops its route
-     * @param track a reference to the track the train uses
-     * @param name the name of the train
+     * @param loops    number of times the train loops its route
+     * @param track    a reference to the track the train uses
+     * @param name     the name of the train
      */
     Train(int[] route, Activity activity, int loops, MageeSemaphore[] track, String name) {
         this.route = route;
@@ -50,7 +50,7 @@ public class Train extends Thread {
     void moveSection(int section) {
         // Try to acquire the next section of track
         track[section].P();
-        activity.addMovedTo(section, name);
+        activity.addMovedTo(section, currentSection, name);
         postMoveSection(section);
     }
 

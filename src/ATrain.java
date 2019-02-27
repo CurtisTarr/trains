@@ -8,8 +8,8 @@ class ATrain extends Train {
      * Constructor for ATrain extends Train
      *
      * @param activity the activity class for logging train position
-     * @param track a reference to the track the train uses
-     * @param name the name of the train
+     * @param track    a reference to the track the train uses
+     * @param name     the name of the train
      */
     ATrain(Activity activity, MageeSemaphore[] track, String name) {
         super(ROUTE, activity, LOOPS, track, name);
@@ -30,7 +30,7 @@ class ATrain extends Train {
             // Not in junction just acquire the next section
             track[section].P();
         }
-        activity.addMovedTo(section, name);
+        activity.addMovedTo(section, currentSection, name);
         postMoveSection(section);
     }
 }
