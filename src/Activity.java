@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.Iterator;
 
@@ -12,13 +13,17 @@ public class Activity {
     private final CopyOnWriteArrayList<String> theActivities;
     private final String[] referenceTrack;
     private String[] trainTrack;
+    private JFrame frame;
+    private JTextArea textArea;
 
     // Constructor for objects of class Activity
     // A reference to the track is passed as a parameter
-    public Activity(String[] trainTrack) {
+    public Activity(String[] trainTrack, JFrame frame, JTextArea textArea) {
         theActivities = new CopyOnWriteArrayList<>();
         this.trainTrack = trainTrack;
         this.referenceTrack = trainTrack.clone();
+        this.frame = frame;
+        this.textArea = textArea;
     }
 
     // Note - edited to take previousSection and trainName so it is easier to keep history of
@@ -31,7 +36,9 @@ public class Activity {
         if (previousSection != -1) {
             trainTrack[previousSection] = referenceTrack[previousSection];
         }
-        trainTrack[newSection] = trainName;
+        if (newSection != -1) {
+            trainTrack[newSection] = trainName;
+        }
         // add the current state of the track to the activity history
         theActivities.add(trackString());
     }// end addMovedTo
@@ -62,6 +69,8 @@ public class Activity {
                 + "      " + trainTrack[10] + "    " + trainTrack[16] + " \n"
                 + "      " + trainTrack[11] + "    " + trainTrack[15] + " \n"
                 + "      " + trainTrack[12] + " " + trainTrack[13] + " " + trainTrack[14] + " \n";
+        textArea.setText(trackStateAsString);
+        frame.pack();
         return (trackStateAsString);
     }// end trackString
 }// end Activity

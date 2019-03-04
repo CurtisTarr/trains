@@ -1,6 +1,18 @@
+import javax.swing.*;
+
 public class RunTrains {
 
     public static void main(String[] args) {
+        // Make GUI
+        JFrame frame = new JFrame("Trains");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        JTextArea textArea = new JTextArea();
+        textArea.setText("");
+
+        frame.getContentPane().add(textArea);
+        frame.setVisible(true);
+
         // Create track using array of semaphores
         MageeSemaphore[] track = new MageeSemaphore[21];
         for (int i = 0; i < 21; i++) {
@@ -10,7 +22,7 @@ public class RunTrains {
         // Create activity
         Activity activity = new Activity(
                 new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
-                        "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"}
+                        "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"}, frame, textArea
         );
 
         // Create trains
