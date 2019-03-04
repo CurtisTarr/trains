@@ -1,17 +1,12 @@
-import javax.swing.*;
+import java.awt.*;
 
 public class RunTrains {
 
+    private final static Color[] COLORS = new Color[]{Color.BLUE, Color.CYAN, Color.GREEN, Color.MAGENTA, Color.RED};
+
     public static void main(String[] args) {
         // Make GUI
-        JFrame frame = new JFrame("Trains");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        JTextArea textArea = new JTextArea();
-        textArea.setText("");
-
-        frame.getContentPane().add(textArea);
-        frame.setVisible(true);
+        TrainTrack trainTrack = new TrainTrack();
 
         // Create track using array of semaphores
         QuietSemaphore[] track = new QuietSemaphore[21];
@@ -20,44 +15,34 @@ public class RunTrains {
         }
 
         // Create activity
-        Activity activity = new Activity(
-                new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
-                        "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"}, frame, textArea
-        );
+        Activity activity = new Activity(trainTrack.getTrackSlots());
 
         // Create trains
-        Train A1 = new ATrain(activity, track, "A1");
-        Train A2 = new ATrain(activity, track, "A2");
-        Train A3 = new ATrain(activity, track, "A3");
-        Train B1 = new BTrain(activity, track, "B1");
-        Train B2 = new BTrain(activity, track, "B2");
-        Train B3 = new BTrain(activity, track, "B3");
-        Train C1 = new CTrain(activity, track, "C1");
-        Train C2 = new CTrain(activity, track, "C2");
-        Train C3 = new CTrain(activity, track, "C3");
+        Train[] trains = new Train[15];
+        int i = 0;
+        for (int j = 0; j < 5; j++) {
+            trains[i] = new ATrain(activity, track, "A" + (j + 1), COLORS[j]);
+            i++;
+        }
+        for (int j = 0; j < 5; j++) {
+            trains[i] = new BTrain(activity, track, "B" + (j + 1), COLORS[j]);
+            i++;
+        }
+        for (int j = 0; j < 5; j++) {
+            trains[i] = new CTrain(activity, track, "C" + (j + 1), COLORS[j]);
+            i++;
+        }
 
         // Start trains
-        A1.start();
-        A2.start();
-        A3.start();
-        B1.start();
-        B2.start();
-        B3.start();
-        C1.start();
-        C2.start();
-        C3.start();
+        for (Train train : trains) {
+            train.start();
+        }
 
         // Wait for trains to finish
         try {
-            A1.join();
-            A2.join();
-            A3.join();
-            B1.join();
-            B2.join();
-            B3.join();
-            C1.join();
-            C2.join();
-            C3.join();
+            for (Train train : trains) {
+                train.join();
+            }
         } catch (InterruptedException e) {
             System.out.println(e.getMessage());
         }

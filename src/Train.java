@@ -1,4 +1,6 @@
-// Train class for controlling movement of train throughout a route
+import java.awt.*;
+
+// Train class for controlling movement of train throughout a route that extends Thread
 public class Train extends Thread {
 
     private int[] route;
@@ -8,6 +10,7 @@ public class Train extends Thread {
     QuietSemaphore[] track;
     String name;
     Activity activity;
+    Color color;
 
     /**
      * Constructor for Train
@@ -17,13 +20,15 @@ public class Train extends Thread {
      * @param loops    number of times the train loops its route
      * @param track    a reference to the track the train uses
      * @param name     the name of the train
+     * @param color    the color of the train
      */
-    Train(int[] route, Activity activity, int loops, QuietSemaphore[] track, String name) {
+    Train(int[] route, Activity activity, int loops, QuietSemaphore[] track, String name, Color color) {
         this.route = route;
         this.activity = activity;
         this.loops = loops;
         this.track = track;
         this.name = name;
+        this.color = color;
         this.currentSection = -1;
     }
 
@@ -36,7 +41,7 @@ public class Train extends Thread {
         // Return back to the starting section to exit the route
         moveSection(route[0]);
         track[currentSection].release();
-        activity.addMovedTo(-1, currentSection, name);
+        activity.addMovedTo(-1, currentSection, name, color);
         activity.addMessage("Train " + name + " finished and has left the route");
     }
 
@@ -51,7 +56,7 @@ public class Train extends Thread {
     void moveSection(int section) {
         // Try to acquire the next section of track
         track[section].acquire();
-        activity.addMovedTo(section, currentSection, name);
+        activity.addMovedTo(section, currentSection, name, color);
         postMoveSection(section);
     }
 
@@ -65,9 +70,10 @@ public class Train extends Thread {
         sleepTrain();
     }
 
+    // Utility method to sleep the train
     private void sleepTrain() {
         try {
-            sleep(100);
+            sleep(500);
         } catch (InterruptedException e) {
             System.out.println(e.getMessage());
         }

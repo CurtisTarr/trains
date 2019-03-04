@@ -1,62 +1,75 @@
 import javax.swing.*;
+import java.awt.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-// Represents the train track activity in a thread-safe CopyOnWriteArrayList<String>
-// called theActivities
-// - addMovementTo(<Integer>) adds a train movement (destination) activity to the record
-// - addMessage(<String>) adds a message to the record
-// - printActivities() display all the activity history of the train movement
-// - updateTrackString() takes a snapshot of the traintrack (with trains) for printing
+// Represents the train track activity in a thread-safe CopyOnWriteArrayList<String> called theActivities
+// Modified version of the supplied Activity class
 class Activity {
 
-    private final CopyOnWriteArrayList<String> theActivities;
-    private final String[] referenceTrack;
-    private String[] trainTrack;
-    private JFrame frame;
-    private JTextArea textArea;
+    private final String[] REFERENCE_TRACK = new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
+            "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"};
 
-    // Constructor for objects of class Activity
-    // A reference to the track is passed as a parameter
-    Activity(String[] trainTrack, JFrame frame, JTextArea textArea) {
+    private CopyOnWriteArrayList<String> theActivities;
+    private String[] trainTrack;
+    private JTextPane[] trackSlots;
+
+    /**
+     * Constructor for Activity
+     *
+     * @param trackSlots the JTextPlanes that represent the track in the GUI
+     */
+    Activity(JTextPane[] trackSlots) {
         theActivities = new CopyOnWriteArrayList<>();
-        this.trainTrack = trainTrack;
-        this.referenceTrack = trainTrack.clone();
-        this.frame = frame;
-        this.textArea = textArea;
+        this.trainTrack = REFERENCE_TRACK.clone();
+        this.trackSlots = trackSlots;
     }
 
-    // Note - edited to take previousSection and trainName so it is easier to keep history of
-    // what train did what, and where all trains are at a moment in time
-    synchronized void addMovedTo(int newSection, int previousSection, String trainName) {
+    /**
+     * Adds train movement to the activity history and updates the trackSlots in the GUI
+     *
+     * @param newSection      the section the train moved too
+     * @param previousSection the section the train moved from
+     * @param trainName       the name of the train
+     */
+    synchronized void addMovedTo(int newSection, int previousSection, String trainName, Color color) {
         // add an activity message to the activity history
-        String tempString1 = String.format("Train %s moved from [%d] to [%d]", trainName, previousSection, newSection);
-        theActivities.add(tempString1);
+        String message = String.format("Train %s moved from [%d] to [%d]", trainName, previousSection, newSection);
+        theActivities.add(message);
         // update track to have train in new location
         if (previousSection != -1) {
-            trainTrack[previousSection] = referenceTrack[previousSection];
+            trainTrack[previousSection] = REFERENCE_TRACK[previousSection];
+            trackSlots[previousSection].setText(Integer.toString(previousSection));
+            trackSlots[previousSection].setForeground(Color.BLACK);
         }
         if (newSection != -1) {
             trainTrack[newSection] = trainName;
+            trackSlots[newSection].setText(trainName);
+            trackSlots[newSection].setForeground(color);
         }
-        // add the current state of the track to the activity history
-        updateTrackString();
-    }// end addMovedTo
+        theActivities.add(trackString());
+    }
 
+    /**
+     * Add message to the activity history
+     *
+     * @param message the message to add
+     */
     void addMessage(String message) {
-        // add an activity message to the activity history
         theActivities.add(message);
-    }// end addMessage
+    }
 
+    /**
+     * Print the activity history
+     */
     void printActivities() {
-        // print all the train activity history
         System.out.println("TRAIN TRACK ACTIVITY(Tracks [0..20])");
         for (String theActivity : theActivities) {
             System.out.println(theActivity);
         }
-    }// end printActivities
+    }
 
     // Utility method to represent the track as a string for printing/display
-    private String updateTrackString() {
+    private String trackString() {
         String trackStateAsString = "       " + trainTrack[2] + "  " + trainTrack[3] + "  " + trainTrack[4] + " \n"
                 + "       " + trainTrack[1] + "     " + trainTrack[5] + " \n"
                 + "       " + trainTrack[0] + "     " + trainTrack[6] + " \n"
@@ -66,8 +79,6 @@ class Activity {
                 + "      " + trainTrack[10] + "    " + trainTrack[16] + " \n"
                 + "      " + trainTrack[11] + "    " + trainTrack[15] + " \n"
                 + "      " + trainTrack[12] + " " + trainTrack[13] + " " + trainTrack[14] + " \n";
-        textArea.setText(trackStateAsString);
-        frame.pack();
         return (trackStateAsString);
-    }// end trackString
-}// end Activity
+    }
+}

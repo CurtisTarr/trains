@@ -1,3 +1,5 @@
+import java.awt.*;
+
 // BTrain class that extends Train, for controlling trains that follow the B route
 class BTrain extends Train {
 
@@ -10,8 +12,9 @@ class BTrain extends Train {
      * @param activity the activity class for logging train position
      * @param track    a reference to the track the train uses
      * @param name     the name of the train
+     * @param color    the color of the train
      */
-    BTrain(Activity activity, QuietSemaphore[] track, String name) {
-        super(ROUTE, activity, LOOPS, track, name);
+    BTrain(Activity activity, QuietSemaphore[] track, String name, Color color) {
+        super(ROUTE, activity, LOOPS, track, name, color);
     }
 }

@@ -1,5 +1,6 @@
 import java.util.concurrent.*;
 
+// QuietSemaphore is a simple extension of Semaphore that swallows InterruptedExceptions
 class QuietSemaphore extends Semaphore {
 
     QuietSemaphore(int permits) {

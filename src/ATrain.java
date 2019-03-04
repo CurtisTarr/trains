@@ -1,3 +1,5 @@
+import java.awt.*;
+
 // ATrain class that extends Train, for controlling trains that follow the A route
 class ATrain extends Train {
 
@@ -10,9 +12,10 @@ class ATrain extends Train {
      * @param activity the activity class for logging train position
      * @param track    a reference to the track the train uses
      * @param name     the name of the train
+     * @param color    the color of the train
      */
-    ATrain(Activity activity, QuietSemaphore[] track, String name) {
-        super(ROUTE, activity, LOOPS, track, name);
+    ATrain(Activity activity, QuietSemaphore[] track, String name, Color color) {
+        super(ROUTE, activity, LOOPS, track, name, color);
     }
 
     @Override
@@ -30,7 +33,7 @@ class ATrain extends Train {
             // Not in junction just acquire the next section
             track[section].acquire();
         }
-        activity.addMovedTo(section, currentSection, name);
+        activity.addMovedTo(section, currentSection, name, color);
         postMoveSection(section);
     }
 }
