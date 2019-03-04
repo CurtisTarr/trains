@@ -1,13 +1,12 @@
 // Train class for controlling movement of train throughout a route
 public class Train extends Thread {
 
+    int loops;
     int currentSection;
     int[] route;
     MageeSemaphore[] track;
     String name;
     Activity activity;
-
-    private int loops;
 
     /**
      * Constructor for Train
@@ -36,6 +35,7 @@ public class Train extends Thread {
         // Return back to the starting section to exit the route
         moveSection(route[0]);
         track[currentSection].V();
+        activity.addMovedTo(-1, currentSection, name);
         activity.addMessage("Train " + name + " finished and has left the route");
     }
 
@@ -66,7 +66,7 @@ public class Train extends Thread {
 
     private void sleepTrain() {
         try {
-            sleep(50);
+            sleep(100);
         } catch (InterruptedException e) {
             System.out.println(e.getMessage());
         }

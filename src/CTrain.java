@@ -16,12 +16,14 @@ class CTrain extends Train {
     }
 
     @Override
-    void moveThroughRoute(int loop) {
-        // Overriding as a C train exits at the end of its route and doesn't
-        // need to move back to its starting section like A and B trains
-        for (int nextSection : route) {
-            moveSection(nextSection);
+    public void run() {
+        // Loop through the route for the specified number of times
+        for (int i = 0; i < loops; i++) {
+            moveThroughRoute(i);
         }
-        activity.addMessage("Train " + name + " finished loop " + (loop + 1));
+        // Return back to the starting section to exit the route
+        track[currentSection].V();
+        activity.addMovedTo(-1, currentSection, name);
+        activity.addMessage("Train " + name + " finished and has left the route");
     }
 }
