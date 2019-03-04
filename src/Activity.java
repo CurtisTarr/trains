@@ -1,14 +1,13 @@
 import javax.swing.*;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.Iterator;
 
 // Represents the train track activity in a thread-safe CopyOnWriteArrayList<String>
 // called theActivities
 // - addMovementTo(<Integer>) adds a train movement (destination) activity to the record
 // - addMessage(<String>) adds a message to the record
 // - printActivities() display all the activity history of the train movement
-// - trackString() takes a snapshot of the traintrack (with trains) for printing
-public class Activity {
+// - updateTrackString() takes a snapshot of the traintrack (with trains) for printing
+class Activity {
 
     private final CopyOnWriteArrayList<String> theActivities;
     private final String[] referenceTrack;
@@ -18,7 +17,7 @@ public class Activity {
 
     // Constructor for objects of class Activity
     // A reference to the track is passed as a parameter
-    public Activity(String[] trainTrack, JFrame frame, JTextArea textArea) {
+    Activity(String[] trainTrack, JFrame frame, JTextArea textArea) {
         theActivities = new CopyOnWriteArrayList<>();
         this.trainTrack = trainTrack;
         this.referenceTrack = trainTrack.clone();
@@ -28,7 +27,7 @@ public class Activity {
 
     // Note - edited to take previousSection and trainName so it is easier to keep history of
     // what train did what, and where all trains are at a moment in time
-    public synchronized void addMovedTo(int newSection, int previousSection, String trainName) {
+    synchronized void addMovedTo(int newSection, int previousSection, String trainName) {
         // add an activity message to the activity history
         String tempString1 = String.format("Train %s moved from [%d] to [%d]", trainName, previousSection, newSection);
         theActivities.add(tempString1);
@@ -40,26 +39,24 @@ public class Activity {
             trainTrack[newSection] = trainName;
         }
         // add the current state of the track to the activity history
-        theActivities.add(trackString());
+        updateTrackString();
     }// end addMovedTo
 
-    public void addMessage(String message) {
+    void addMessage(String message) {
         // add an activity message to the activity history
-        String tempString1 = message;
-        theActivities.add(tempString1);
+        theActivities.add(message);
     }// end addMessage
 
-    public void printActivities() {
+    void printActivities() {
         // print all the train activity history
         System.out.println("TRAIN TRACK ACTIVITY(Tracks [0..20])");
-        Iterator<String> iterator = theActivities.iterator();
-        while (iterator.hasNext()) {
-            System.out.println(iterator.next());
+        for (String theActivity : theActivities) {
+            System.out.println(theActivity);
         }
     }// end printActivities
 
     // Utility method to represent the track as a string for printing/display
-    public String trackString() {
+    private String updateTrackString() {
         String trackStateAsString = "       " + trainTrack[2] + "  " + trainTrack[3] + "  " + trainTrack[4] + " \n"
                 + "       " + trainTrack[1] + "     " + trainTrack[5] + " \n"
                 + "       " + trainTrack[0] + "     " + trainTrack[6] + " \n"

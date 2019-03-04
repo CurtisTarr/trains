@@ -1,10 +1,11 @@
 // Train class for controlling movement of train throughout a route
 public class Train extends Thread {
 
+    private int[] route;
+
     int loops;
     int currentSection;
-    int[] route;
-    MageeSemaphore[] track;
+    QuietSemaphore[] track;
     String name;
     Activity activity;
 
@@ -17,7 +18,7 @@ public class Train extends Thread {
      * @param track    a reference to the track the train uses
      * @param name     the name of the train
      */
-    Train(int[] route, Activity activity, int loops, MageeSemaphore[] track, String name) {
+    Train(int[] route, Activity activity, int loops, QuietSemaphore[] track, String name) {
         this.route = route;
         this.activity = activity;
         this.loops = loops;
@@ -34,7 +35,7 @@ public class Train extends Thread {
         }
         // Return back to the starting section to exit the route
         moveSection(route[0]);
-        track[currentSection].V();
+        track[currentSection].release();
         activity.addMovedTo(-1, currentSection, name);
         activity.addMessage("Train " + name + " finished and has left the route");
     }
@@ -49,7 +50,7 @@ public class Train extends Thread {
 
     void moveSection(int section) {
         // Try to acquire the next section of track
-        track[section].P();
+        track[section].acquire();
         activity.addMovedTo(section, currentSection, name);
         postMoveSection(section);
     }
@@ -57,7 +58,7 @@ public class Train extends Thread {
     void postMoveSection(int section) {
         // Release the previous section if there was on (-1 means it wasn't in a section)
         if (currentSection != -1) {
-            track[currentSection].V();
+            track[currentSection].release();
         }
         // Set the currentSection to be the new section
         currentSection = section;

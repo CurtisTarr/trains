@@ -11,7 +11,7 @@ class CTrain extends Train {
      * @param track    a reference to the track the train uses
      * @param name     the name of the train
      */
-    CTrain(Activity activity, MageeSemaphore[] track, String name) {
+    CTrain(Activity activity, QuietSemaphore[] track, String name) {
         super(ROUTE, activity, LOOPS, track, name);
     }
 
@@ -22,7 +22,7 @@ class CTrain extends Train {
             moveThroughRoute(i);
         }
         // Return back to the starting section to exit the route
-        track[currentSection].V();
+        track[currentSection].release();
         activity.addMovedTo(-1, currentSection, name);
         activity.addMessage("Train " + name + " finished and has left the route");
     }

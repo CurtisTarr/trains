@@ -14,9 +14,9 @@ public class RunTrains {
         frame.setVisible(true);
 
         // Create track using array of semaphores
-        MageeSemaphore[] track = new MageeSemaphore[21];
+        QuietSemaphore[] track = new QuietSemaphore[21];
         for (int i = 0; i < 21; i++) {
-            track[i] = new MageeSemaphore(1);
+            track[i] = new QuietSemaphore(1);
         }
 
         // Create activity

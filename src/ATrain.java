@@ -11,7 +11,7 @@ class ATrain extends Train {
      * @param track    a reference to the track the train uses
      * @param name     the name of the train
      */
-    ATrain(Activity activity, MageeSemaphore[] track, String name) {
+    ATrain(Activity activity, QuietSemaphore[] track, String name) {
         super(ROUTE, activity, LOOPS, track, name);
     }
 
@@ -21,14 +21,14 @@ class ATrain extends Train {
             // If section is 7 try to acquire sections 9, 8 and 7 in that order
             // to ensure that the train has complete control of the junction and to
             // ensure that it doesn't block another train that may be inside the junction
-            track[9].P();
-            track[8].P();
-            track[7].P();
+            track[9].acquire();
+            track[8].acquire();
+            track[7].acquire();
         } else if (section == 8 || section == 9) {
             // Means the train is inside junction and will have control of sections 8 and 9 already
         } else {
             // Not in junction just acquire the next section
-            track[section].P();
+            track[section].acquire();
         }
         activity.addMovedTo(section, currentSection, name);
         postMoveSection(section);

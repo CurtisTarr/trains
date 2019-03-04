@@ -11,7 +11,7 @@ class BTrain extends Train {
      * @param track    a reference to the track the train uses
      * @param name     the name of the train
      */
-    BTrain(Activity activity, MageeSemaphore[] track, String name) {
+    BTrain(Activity activity, QuietSemaphore[] track, String name) {
         super(ROUTE, activity, LOOPS, track, name);
     }
 }
