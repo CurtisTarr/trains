@@ -23,12 +23,8 @@ public class RunTrains {
         for (int j = 0; j < 5; j++) {
             trains[i] = new ATrain(activity, track, "A" + (j + 1), COLORS[j]);
             i++;
-        }
-        for (int j = 0; j < 5; j++) {
             trains[i] = new BTrain(activity, track, "B" + (j + 1), COLORS[j]);
             i++;
-        }
-        for (int j = 0; j < 5; j++) {
             trains[i] = new CTrain(activity, track, "C" + (j + 1), COLORS[j]);
             i++;
         }

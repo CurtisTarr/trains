@@ -45,6 +45,11 @@ public class Train extends Thread {
         activity.addMessage("Train " + name + " finished and has left the route");
     }
 
+    /**
+     * Moves the train through its route once
+     *
+     * @param loop the current loop the train is on
+     */
     void moveThroughRoute(int loop) {
         // For each section in the route move to it
         for (int nextSection : route) {
@@ -53,6 +58,11 @@ public class Train extends Thread {
         activity.addMessage("Train " + name + " finished loop " + (loop + 1));
     }
 
+    /**
+     * Move the train to the section of track
+     *
+     * @param section the section of track to move too
+     */
     void moveSection(int section) {
         // Try to acquire the next section of track
         track[section].acquire();
@@ -60,6 +70,11 @@ public class Train extends Thread {
         postMoveSection(section);
     }
 
+    /**
+     * Release the previous section of track and update the trains currentSection to the new one
+     *
+     * @param section the section to update currentSection with
+     */
     void postMoveSection(int section) {
         // Release the previous section if there was on (-1 means it wasn't in a section)
         if (currentSection != -1) {

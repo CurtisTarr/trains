@@ -6,9 +6,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 // Modified version of the supplied Activity class
 class Activity {
 
-    private final String[] REFERENCE_TRACK = new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
-            "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"};
-
     private CopyOnWriteArrayList<String> theActivities;
     private String[] trainTrack;
     private JTextPane[] trackSlots;
@@ -20,7 +17,8 @@ class Activity {
      */
     Activity(JTextPane[] trackSlots) {
         theActivities = new CopyOnWriteArrayList<>();
-        this.trainTrack = REFERENCE_TRACK.clone();
+        this.trainTrack = new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
+                "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"};
         this.trackSlots = trackSlots;
     }
 
@@ -35,12 +33,13 @@ class Activity {
         // add an activity message to the activity history
         String message = String.format("Train %s moved from [%d] to [%d]", trainName, previousSection, newSection);
         theActivities.add(message);
-        // update track to have train in new location
+        // reset the previous section
         if (previousSection != -1) {
-            trainTrack[previousSection] = REFERENCE_TRACK[previousSection];
+            trainTrack[previousSection] = Integer.toString(previousSection);
             trackSlots[previousSection].setText(Integer.toString(previousSection));
             trackSlots[previousSection].setForeground(Color.BLACK);
         }
+        // display the train on the new section
         if (newSection != -1) {
             trainTrack[newSection] = trainName;
             trackSlots[newSection].setText(trainName);

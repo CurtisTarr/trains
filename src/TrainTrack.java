@@ -1,25 +1,43 @@
 import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import java.awt.*;
 
+// Class for crating the GUI that shows the train track and the trains
 class TrainTrack {
 
     private JTextPane[] trackSlots;
 
+    /**
+     * Constructor for TrainTrack
+     */
     TrainTrack() {
         JFrame frame = new JFrame("Trains");
+        frame.setPreferredSize(new Dimension(400, 400));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new GridLayout(7, 7));
+        frame.setBackground(Color.GRAY);
 
         trackSlots = new JTextPane[21];
         for (int i = 0; i < 21; i++) {
             JTextPane pane = new JTextPane();
-            SimpleAttributeSet attributeSet = new SimpleAttributeSet();
-            StyleConstants.setBold(attributeSet, true);
 
-            // Set the attributes before adding text
+            // Style pane
+            StyledDocument doc = pane.getStyledDocument();
+            SimpleAttributeSet attributeSet = new SimpleAttributeSet();
+            // Bold
+            StyleConstants.setBold(attributeSet, true);
+            // Center align
+            StyleConstants.setAlignment(attributeSet, StyleConstants.ALIGN_CENTER);
+            doc.setParagraphAttributes(0, doc.getLength(), attributeSet, false);
             pane.setCharacterAttributes(attributeSet, true);
+            // Font
+            pane.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 30));
+            pane.setForeground(Color.BLACK);
+            // Border
+            pane.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
+
             pane.setText(Integer.toString(i));
             trackSlots[i] = pane;
         }

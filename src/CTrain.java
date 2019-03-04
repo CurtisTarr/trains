@@ -24,7 +24,7 @@ class CTrain extends Train {
         for (int i = 0; i < loops; i++) {
             moveThroughRoute(i);
         }
-        // Return back to the starting section to exit the route
+        // Don't return back to the starting section to exit the route since CTrains don't loop
         track[currentSection].release();
         activity.addMovedTo(-1, currentSection, name, color);
         activity.addMessage("Train " + name + " finished and has left the route");
