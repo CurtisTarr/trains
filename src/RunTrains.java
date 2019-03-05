@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.concurrent.TimeUnit;
 
 public class RunTrains {
 
@@ -32,6 +33,11 @@ public class RunTrains {
         // Start trains
         for (Train train : trains) {
             train.start();
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException ex) {
+                System.out.println(ex.getMessage());
+            }
         }
 
         // Wait for trains to finish

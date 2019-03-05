@@ -88,7 +88,7 @@ public class Train extends Thread {
     // Utility method to sleep the train
     private void sleepTrain() {
         try {
-            sleep(500);
+            sleep(300);
         } catch (InterruptedException e) {
             System.out.println(e.getMessage());
         }
