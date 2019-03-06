@@ -48,14 +48,14 @@ public class Train extends Thread {
     /**
      * Moves the train through its route once
      *
-     * @param loop the current loop the train is on
+     * @param loopNumber the current loop the train is on
      */
-    void moveThroughRoute(int loop) {
+    void moveThroughRoute(int loopNumber) {
         // For each section in the route move to it
         for (int nextSection : route) {
             moveSection(nextSection);
         }
-        activity.addMessage("Train " + name + " finished loop " + (loop + 1));
+        activity.addMessage("Train " + name + " finished loop " + (loopNumber + 1));
     }
 
     /**

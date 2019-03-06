@@ -20,11 +20,8 @@ class CTrain extends Train {
 
     @Override
     public void run() {
-        // Loop through the route for the specified number of times
-        for (int i = 0; i < loops; i++) {
-            moveThroughRoute(i);
-        }
-        // Don't return back to the starting section to exit the route since CTrains don't loop
+        // Just move through the route once and then exit the track
+        moveThroughRoute(0);
         track[currentSection].release();
         activity.addMovedTo(-1, currentSection, name, color);
         activity.addMessage("Train " + name + " finished and has left the route");
